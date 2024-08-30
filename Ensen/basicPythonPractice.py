@@ -1,38 +1,39 @@
-# Name:
-# Date:
+# Name: Ensen Kam
+# Date: 8/27/24
 # Machine Learning Foundations
 # Assingment 0_1 Python Coding Practice
 
 # Function 1: Print Hello World
 def print_hello_world():
-    # TODO: Print "Hello, World!" to the console
-    pass
+    print("Hello World")
 
 # Function 2: Sum of Two Numbers
 def sum_two_numbers(a, b):
-    # TODO: Return the sum of a and b
-    pass
+    return a + b
 
 # Function 3: Check if a List Contains an Element
 def contains_element(lst, element):
-    # TODO: Return True if element is in lst, otherwise False
-    pass
+     return element in lst
 
 # Function 4: Count Occurrences of a Character in a String
 def count_char_in_string(s, char):
-    # TODO: Return the number of times char appears in s
-    pass
+    return s.count(char)
 
 # Function 5: Create a List of Even Numbers
 def list_even_numbers(n):
-    # TODO: Return a list of even numbers from 0 to n-1
-    pass
+    lst = []
+    for number in range(n):
+        if number % 2 == 0:
+            lst.append(number)
+    return lst
 
 # Function 6: Find the Maximum Number in a List
 def find_max(lst):
-    # TODO: Return the maximum number in the list lst
-    pass
-
+    max = lst[0]
+    for item in lst:
+        if max < item:
+            max = item
+    return max
 
 # DO NOT MODIFY THE CODE BELOW
 # Tests to check if the functions are implemented correctly
