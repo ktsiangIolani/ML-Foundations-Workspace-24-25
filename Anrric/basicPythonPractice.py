@@ -6,31 +6,55 @@
 # Function 1: Print Hello World
 def print_hello_world():
     # TODO: Print "Hello, World!" to the console
+    print("Hello,World!")
     pass
 
 # Function 2: Sum of Two Numbers
 def sum_two_numbers(a, b):
     # TODO: Return the sum of a and b
+    return a + b
     pass
 
 # Function 3: Check if a List Contains an Element
 def contains_element(lst, element):
     # TODO: Return True if element is in lst, otherwise False
+    for char in lst :
+        if char == element:
+            return True 
+    return False
     pass
 
 # Function 4: Count Occurrences of a Character in a String
 def count_char_in_string(s, char):
     # TODO: Return the number of times char appears in s
+    count = 0
+    for item in s:
+        if item == char:
+            count = count + 1
+    return count 
+        
+    
     pass
 
 # Function 5: Create a List of Even Numbers
 def list_even_numbers(n):
     # TODO: Return a list of even numbers from 0 to n-1
+    even_numbers = []
+    for i in range(n):
+        if i % 2 == 0:
+            even_numbers.append(i)
+    return even_numbers
+    
     pass
 
 # Function 6: Find the Maximum Number in a List
 def find_max(lst):
     # TODO: Return the maximum number in the list lst
+    max_number = lst[0]
+    for i in lst:
+        if i >= max_number:
+            max_number = i
+    return max_number
     pass
 
 
