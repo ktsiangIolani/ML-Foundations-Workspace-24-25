@@ -28,43 +28,27 @@ answers = ["Maybe you should start with a Nintendo Switch or begin with a comput
            "Me personally I think the next big trend will be like new virtual reality things.",
            ]
 
-def displayQuestion(questions):
-    print("Question: " + questions)
+def specificMatch(userInput):
+    for i in range(len(questions)): #loop through questions
+        if userInput == questions[i]: # find the index of the question that matches our userInput
+            print (answers[i])
+                    # use that index for get the index of the answer
 
-def displayAnswer(answer):
-    print("Answer: " + answer)
 
 def chatbot():
-    print("Welcome to my video game chatbot, if you would like to exit just type 'exit' ")
+    print("Welcome to my video game chatbot, if you would like to exit just type 'exit'")
 
     while True:
-        for i, question in enumerate(questions, 1):
-            print(str(i) + ". " + question)
-        userInput = input("Your choice from 1-10 or exit:")
+        
+        userInput = input("Write your question or type 'exit' to leave: " )
+        specificMatch(userInput)
 
         if userInput == "exit":
             print("Thanks for chatting, cya next time")
             break
-        if userInput.isdigit():
-            choice = int(userInput)
-            if 1 <= choice <= 10:
-                displayQuestion(questions[choice - 1])
-                displayAnswer(answers[choice - 1])
-                
-                # Wait for the user to type 'next'
-                while True:
-                    nextInput = input("Type 'next' to continue or 'exit' to quit: ").lower()
-                    if nextInput == "next":
-                        break
-                    elif nextInput == "exit":
-                        print("Thanks for chatting, cya next time")
-                        return
-                    else:
-                        print("Please type 'next' to continue or 'exit' to quit.")
-            else:
-                print("Please choose a valid number between 1 and 10.")
+               
         else:
-            print("Please enter a number between 1 and 10, or type 'exit'.")
+            print("I don't know how to answer that question.")
 
         
 
