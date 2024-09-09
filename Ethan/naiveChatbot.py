@@ -29,11 +29,33 @@ answers = ["Maybe you should start with a Nintendo Switch or begin with a comput
            ]
 
 def specificMatch(userInput):
+    question = False
     for i in range(len(questions)): #loop through questions
-        if userInput == questions[i]: # find the index of the question that matches our userInput
+        if userInput == questions[i]: #find the index of the question that matches our userInput
             print (answers[i])
-                    # use that index for get the index of the answer
+            question = True
+            break
+                    #use that index for get the index of the answer
+    return question
 
+def similarWords(userInput, questions):
+      
+    userWords = userInput.lower().split()  #split the users input into words
+    
+    for i in range(len(questions)):
+        questionWords = questions[i].lower().split()  #split each question into words in questions list
+        #manually check for any matching words
+        count = 0
+        for word in userWords:
+            if word in questionWords:
+                count += 1
+
+        threshold = 4
+
+        if count >= threshold:
+            return answers[i]
+
+    return "I don't understand this question."  
 
 def chatbot():
     print("Welcome to my video game chatbot, if you would like to exit just type 'exit'")
@@ -41,15 +63,22 @@ def chatbot():
     while True:
         
         userInput = input("Write your question or type 'exit' to leave: " )
-        specificMatch(userInput)
-
-        if userInput == "exit":
-            print("Thanks for chatting, cya next time")
+        
+        if specificMatch(userInput) == False:
+            answer = similarWords(userInput, questions) #if no questions are the same as the questions in the list use the similar words function
+            print(answer)
+        
+        
+        
+        if userInput == "exit": #if user types exit then exit the chatbot
+            print("Thanks for chatting, cya next time")   
             break
-               
-        else:
-            print("I don't know how to answer that question.")
+    
 
+        
+    
+
+        
         
 
 def main():

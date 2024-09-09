@@ -17,12 +17,26 @@ def sum_two_numbers(a, b):
 # Function 3: Check if a List Contains an Element
 def contains_element(lst, element):
     # TODO: Return True if element is in lst, otherwise False
-    return element in lst
+    for item in lst:
+        if item == element:
+            return True
+    return False
+    
+
 
 # Function 4: Count Occurrences of a Character in a String
 def count_char_in_string(s, char):
     # TODO: Return the number of times char appears in s
-    return s.count(char)
+    count = 0
+    for c in s:
+        if c == char:
+            count += 1
+    return count
+        
+        
+
+
+         
 
 # Function 5: Create a List of Even Numbers
 def list_even_numbers(n):
@@ -32,7 +46,8 @@ def list_even_numbers(n):
 # Function 6: Find the Maximum Number in a List
 def find_max(lst):
     # TODO: Return the maximum number in the list lst
-     return max(lst) if lst else None
+    maxValue = max(lst)
+    print (maxValue)
 
 
 # DO NOT MODIFY THE CODE BELOW
