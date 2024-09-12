@@ -1,7 +1,7 @@
 # ML Foundations
 # 2D Array Practice - Ms. Tsiang
-# Name:
-# Date:
+# Name: Aliya Hamdani
+# Date: 09/08/24
 
 #TODO: Write a function to find the center element of a 2D array
 # Assume that there will be a center element
