@@ -1,17 +1,18 @@
 # Draw a Picture in a 2D Array
 # ML Foundations - Ms.Tsiang
-
 # Juliana
 # 9/10/24
 
+#draws the diagonal lines of the flag
 def drawDiagonal(matrix):
     # TODO Given a 10x10 2D array, write a function that draws a picture of your choice in the array by converting 0s into 1s
     size = len(matrix)
-    for i in range(size):
+    for i in range(size): 
         matrix[i][i] = 1
         matrix[i][size-1-i] = 1
     return matrix
 
+#draws the horizontal and verical lines of the flag
 def drawCross(matrix):
     size = len(matrix)
     middle = size//2
@@ -22,6 +23,7 @@ def drawCross(matrix):
         matrix[i][4] = 1   
     return matrix
 
+#adds color to the matrix to make the british flag look more clear
 def color(matrix):
     for row in matrix:
         for value in row:
