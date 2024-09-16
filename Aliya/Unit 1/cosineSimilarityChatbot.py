@@ -46,6 +46,7 @@ def findSimilarQuestion(userQ):
         vector = vectorizer.fit_transform([userQ, question]) 
         # calculate the cosine similarity (distance) between the two vectors
         similarity = cosine_similarity(vector[0:1], vector[1:2])
+        print(similarity)
         if similarity[0][0] > maxScore:
             maxScore = similarity[0][0]
             closestQuestion = question
@@ -116,11 +117,13 @@ def askQuestion():
 
 def main():
     #TODO fill out main with calls to your custom functions. Delete 'pass' when done.
-    askQuestion()
+    findSimilarQuestion("Why do pickles taste sour?")
+    #askQuestion()
     
 main()
 
 
+###TRASH
 '''
 #Questions and answers about pickles
 questions = ["How long does it take to make pickles?", "How to make pickles?", "Where are pickles from?", "What are different types of pickles?", "Why do pickles last for such a long time?", 
