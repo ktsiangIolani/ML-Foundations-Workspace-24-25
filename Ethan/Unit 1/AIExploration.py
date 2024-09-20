@@ -11,10 +11,16 @@ matrix = [[0 for i in range(5)] for i in range(5)]
 def drawX(matrix):
     for i in range(len(matrix)):
         matrix[i][i] = 1
+    matrix[0][0] = 1
+    matrix[4][0] = 1
+    matrix[3][1] = 1
+    matrix[1][3] = 1
+    matrix[4][0] = 1
+
 
     for i in range(len(matrix)):
         
-    
+            pass
         
 
 
@@ -38,11 +44,12 @@ def drawO(matrix):
 
 def print_matrix(matrix):
     for row in matrix:
-        print(" ".join(str(cell) for cell in row))
+        print(row)
 
 # Example usage
 n = 7  # Example odd size
 o_matrix = drawO(n)
+
 print_matrix(o_matrix)
 
 
