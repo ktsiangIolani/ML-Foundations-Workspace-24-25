@@ -38,6 +38,3 @@ def recursiveMinimax(board, player):
                 board[r][c] == " "
     # returns the best score for this board, this potential move
     return bestScore, bestMove
-
-
-
