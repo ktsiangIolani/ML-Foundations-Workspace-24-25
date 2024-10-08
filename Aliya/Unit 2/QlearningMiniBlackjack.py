@@ -1,5 +1,6 @@
 # Qlearning example for mini blackjack
 import random
+import time
 
 # -------------- PART 1: Implement Mini blackjack --------------
 
@@ -28,13 +29,15 @@ def miniBlackjackTurn(hand):
     
     return hand, user_action
 
-def playGameEpisode():
+def playGameEpisode(q_table):
     # Choose a random card
     hand = random.choice(CARDS)
     isPlaying = True
     while isPlaying:
         new_hand, action = miniBlackjackTurn(hand)
         # Update our q table
+        reward = computeReward(hand, action)
+        updateQTable(q_table, hand, new_hand, reward, action)
 
         # If we bust or if user chose to stand, then end game
         if new_hand >= 22 or action == "stand":
@@ -52,9 +55,44 @@ def computeReward(state, action):
     else:
         return 0
 
-def main():
-    # playGameEpisode()
-    print(computeReward(20, "hit"))
-    print(computeReward(19, "hit"))
-    print(computeReward(19, "stand"))
-main()
+# Initialize an empty Q table with 8 rows for the states, and 2 columns for the actions
+def initializeQTable():
+    return [[0,0] for i in range(8)]
+
+# print the Q table
+def printTable(q_table):
+    for i in range(len(q_table)):
+        print(q_table[i])
+
+def updateQTable(q_table, old_hand, new_hand, reward, action):
+    # Initializing given constants in equation
+    learningRate = 0.1
+    discountFactor = 0.4
+
+    # Finding corresponding index in Q table given a state and action
+    actionIndex = ACTIONS.index(action)
+    oldHandIndex = STATES.index(old_hand)
+    newHandIndex = STATES.index(new_hand)
+
+    # Creating other variables in equation
+    currentQValue = q_table(oldHandIndex, actionIndex)
+    maxFutureReward = max(q_table[newHandIndex][0], q_table[newHandIndex][1])
+
+    # Update Q table with value determined by equation
+    newQValue = currentQValue + learningRate*(reward + (discountFactor * maxFutureReward) - currentQValue)
+    q_table[oldHandIndex][actionIndex] = newQValue
+
+# -------------- PART 3: CONDUCT Q LEARNING ON MINI BLACKJACK --------------
+
+def qLearningOnMiniBlackjack():
+    q_table = initializeQTable()
+    episodes = 50
+
+    for i in range(50):
+        printTable(q_table)
+        playGameEpisode(q_table)
+        time.sleep(1)
+    print("Training finished")
+    printTable(q_table)
+
+qLearningOnMiniBlackjack()
