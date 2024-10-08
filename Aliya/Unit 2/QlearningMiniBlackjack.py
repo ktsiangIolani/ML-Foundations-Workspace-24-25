@@ -75,7 +75,7 @@ def updateQTable(q_table, old_hand, new_hand, reward, action):
     newHandIndex = STATES.index(new_hand)
 
     # Creating other variables in equation
-    currentQValue = q_table(oldHandIndex, actionIndex)
+    currentQValue = q_table[oldHandIndex, actionIndex]
     maxFutureReward = max(q_table[newHandIndex][0], q_table[newHandIndex][1])
 
     # Update Q table with value determined by equation
@@ -88,7 +88,7 @@ def qLearningOnMiniBlackjack():
     q_table = initializeQTable()
     episodes = 50
 
-    for i in range(50):
+    for i in range(episodes):
         printTable(q_table)
         playGameEpisode(q_table)
         time.sleep(1)
