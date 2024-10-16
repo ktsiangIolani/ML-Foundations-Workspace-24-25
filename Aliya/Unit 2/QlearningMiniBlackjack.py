@@ -11,7 +11,8 @@ CARDS = [9, 10, 11]
 # Handles a single turn of our game
 def miniBlackjackTurn(hand):
     # Ask the user to select a new action
-    user_action = input("Do you want to hit or stand: ")
+    #user_action = input("Do you want to hit or stand: ")
+    user_action = random.choice(ACTIONS)
 
     # If the input is "hit" choose a new card and add the card to the hand
     if user_action == "hit":
@@ -75,7 +76,7 @@ def updateQTable(q_table, old_hand, new_hand, reward, action):
     newHandIndex = STATES.index(new_hand)
 
     # Creating other variables in equation
-    currentQValue = q_table[oldHandIndex, actionIndex]
+    currentQValue = q_table[oldHandIndex][actionIndex]
     maxFutureReward = max(q_table[newHandIndex][0], q_table[newHandIndex][1])
 
     # Update Q table with value determined by equation
