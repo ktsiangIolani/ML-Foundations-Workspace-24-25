@@ -103,7 +103,7 @@ def displayGraphs(main_table):
 def qLearningOnMiniBlackjack():
     q_table = initializeQTable()
     main_table = initializeDataFrame(q_table)
-    episodes = 10000
+    episodes = 2000
 
     for i in range(episodes):
         #printTable(q_table)
