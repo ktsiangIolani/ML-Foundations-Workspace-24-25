@@ -1,6 +1,8 @@
 # Qlearning example for mini blackjack
 import random
 import time
+import plotly.express as px
+import pandas as pd
 
 # -------------- PART 1: Implement Mini blackjack --------------
 
@@ -18,15 +20,15 @@ def miniBlackjackTurn(hand):
     if user_action == "hit":
         new_card = random.choice(CARDS)
         hand += new_card
-        print("new card:", new_card)
+        #print("new card:", new_card)
 
     # If the input is stand, don't add a card
-    print("current hand:", hand)
+    #print("current hand:", hand)
 
     # Treat everything above 21 as "bust" which we will represent as 22
     if hand >= 22:
         hand = 22
-        print("You bust!")
+        #print("You bust!")
     
     return hand, user_action
 
@@ -47,9 +49,9 @@ def playGameEpisode(q_table):
 
 # -------------- PART 2: Q LEARNING HELPER FUNCTIONS --------------
 def computeReward(state, action):
-    if action == "stand" and state in STATES:
+    if action == "stand" and state in [19, 20, 21]:
         return 1
-    elif action == "hit" and state >= 19:
+    elif action == "hit" and state >= 18:
         return -1
     elif action == "stand" and state < 19:
         return -1
@@ -62,8 +64,9 @@ def initializeQTable():
 
 # print the Q table
 def printTable(q_table):
+    print(ACTIONS)
     for i in range(len(q_table)):
-        print(q_table[i])
+        print(str(STATES[i]) + " " + str(q_table[i]))
 
 def updateQTable(q_table, old_hand, new_hand, reward, action):
     # Initializing given constants in equation
@@ -83,16 +86,36 @@ def updateQTable(q_table, old_hand, new_hand, reward, action):
     newQValue = currentQValue + learningRate*(reward + (discountFactor * maxFutureReward) - currentQValue)
     q_table[oldHandIndex][actionIndex] = newQValue
 
+def initializeDataFrame(q_table):
+    main_table = pd.DataFrame(q_table)
+    main_table.insert(0, "episode", 0) # for q table data frame inserting at column 0, we are calling it 'episode', and all values are 0
+    main_table.insert(0, "states", STATES)
+    return main_table
+
+def displayGraphs(main_table):
+    figHit = px.scatter(main_table, x = "episode", y = 0, color = "States", title = "Q-Values for Hit") # y=0 means looking at 'hit' column 0, y is states
+    figHit.show()
+    figStand = px.scatter(main_table, x = "episode", y = 1, color = "States", title = "Q-Values for Stand")
+    figStand.show()
+
 # -------------- PART 3: CONDUCT Q LEARNING ON MINI BLACKJACK --------------
 
 def qLearningOnMiniBlackjack():
     q_table = initializeQTable()
-    episodes = 50
+    main_table = initializeDataFrame(q_table)
+    episodes = 10000
 
     for i in range(episodes):
-        printTable(q_table)
+        #printTable(q_table)
         playGameEpisode(q_table)
-        time.sleep(1)
+
+        # Add q tables to the dataFrame which will allow us to visualize the q-values on a graph
+        dfQ = pd.DataFrame(q_table)
+        dfQ.insert(0, "episode", i)
+        dfQ.insert(0, "States", STATES)
+        main_table = pd.concat([main_table, dfQ])
+        #time.sleep(1)
+    displayGraphs(main_table)
     print("Training finished")
     printTable(q_table)
 
