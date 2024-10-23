@@ -71,7 +71,7 @@ def printTable(q_table):
 def updateQTable(q_table, old_hand, new_hand, reward, action):
     # Initializing given constants in equation
     learningRate = 0.1
-    discountFactor = 0.4
+    discountFactor = 0.9
 
     # Finding corresponding index in Q table given a state and action
     actionIndex = ACTIONS.index(action)
