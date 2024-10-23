@@ -7,7 +7,43 @@
 # Implement a 2 player game of tic tac toe
 # Board represents a 3x3 matrix
 
-import random
+def minimaxBot(board, player):
+    bestScore, bestMove = recursiveMinimax(board, player)
+    board[bestMove[0]][bestMove[1]] = player
+
+def recursiveMinimax(board, player):
+    #initialize varaibles
+    opponent = "X" if player == "O" else "O"
+    bestScore = -100 if player == "X" else 100
+    bestMove = [None, None]
+
+    # setup base cases
+    if check_winner(board) == "X":
+        return 1, bestMove
+    if check_winner(board) == "O":
+        return -1, bestMove
+    if check_draw(board):
+        return 0, bestMove
+    
+    # setup recursive case
+    for i in range(len(board)):
+        for j in range(len(board)):
+            if board[i][j] == " ":
+                #temporarily placing move at i, j
+                board[i][j] = player
+                #recursively get the score if we place at i, j
+                score, move = recursiveMinimax(board, opponent)
+                # if we are max, then update score if it is higher than bestScore
+                if player == "X" and score > bestScore:
+                    bestScore = score
+                    bestMove = [i, j] # update best move to be this move
+                # if we are min, then update score if it is lower than bestScore
+                if player == "O" and score < bestScore:
+                    bestScore = score
+                    bestMove = [i, j] # update best move to be this move
+                board[i][j] = " "
+    # return the best score for this board
+    return bestScore, bestMove
 
 def playerXTurn(board):
     #TODO ask the player for an input row and column
@@ -20,40 +56,41 @@ def playerXTurn(board):
     board[row][column] = 'x'
     
 
-def playerOTurn(board):
+#def playerOTurn(board):
     #TODO ask the player for an input row and column
-    for i in range(len(board)):
-        for j in range(len(board[0])):
-            if board[i][j] == " ":
-                board[i][j] = "o"
-                if check_winner(board) == 'o':  
-                    return  
-                board[i][j] = " "
-     # block opponent's winning move
-    for i in range(len(board)):
-        for j in range(len(board[0])):
-            if board[i][j] == " ":
-                board[i][j] = 'x'  
-                if check_winner(board) == 'x':
-                    board[i][j] = 'o'  
-                    return
-                board[i][j] = " "  
+    # for i in range(len(board)):
+    #     for j in range(len(board[0])):
+    #         if board[i][j] == " ":
+    #             board[i][j] = "o"
+    #             if check_winner(board) == 'o':  
+    #                 return  
+    #             board[i][j] = " "
+    #  # block opponent's winning move
+    # for i in range(len(board)):
+    #     for j in range(len(board[0])):
+    #         if board[i][j] == " ":
+    #             board[i][j] = 'x'  
+    #             if check_winner(board) == 'x':
+    #                 board[i][j] = 'o'  
+    #                 return
+    #             board[i][j] = " "  
      
-    if board[1][1] == " ":
-        board[1][1] = 'o'
-        return
+    # if board[1][1] == " ":
+    #     board[1][1] = 'o'
+    #     return
     
-    corners = [(0, 0), (0, 2), (2, 0), (2, 2)]
-    for row, col in corners:
-        if board[row][col] == " ":
-            board[row][col] = 'o'
-            return
+    # corners = [(0, 0), (0, 2), (2, 0), (2, 2)]
+    # for row, col in corners:
+    #     if board[row][col] == " ":
+    #         board[row][col] = 'o'
+    #         return
         
-    edges = [(0, 1), (1, 0), (1, 2), (2, 1)]
-    for row, col in edges:
-        if board[row][col] == " ":
-            board[row][col] = 'o'
-            return
+    # edges = [(0, 1), (1, 0), (1, 2), (2, 1)]
+    # for row, col in edges:
+    #     if board[row][col] == " ":
+    #         board[row][col] = 'o'
+    #         return
+    # minimaxBot(board, "O")
     
 
 def check_draw(board):
@@ -100,7 +137,7 @@ def tic_tac_toe():
         if current_player == 'X':
             playerXTurn(board)
         else:
-            playerOTurn(board)
+            minimaxBot(board,"O")
             
         winner = check_winner(board)
         if winner:
