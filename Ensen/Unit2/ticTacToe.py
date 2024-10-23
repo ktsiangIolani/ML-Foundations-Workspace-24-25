@@ -9,9 +9,9 @@
 
 import random
 
-def playerXTurn(board):
+def playerOTurn(board):
     while True:
-        print("Player X")
+        print("Player O")
         row = input("Row: ")
         column = input("Column: ")
         while row not in ["0", "1", "2"]:
@@ -23,21 +23,61 @@ def playerXTurn(board):
         if board[int(row)][int(column)] != " ":
                 print("That spot is already taken. Please choose another.")
         else:    
-            board[int(row)][int(column)] = "X"
+            board[int(row)][int(column)] = "O"
             break
 
-    return board
 
-def playerOTurn(board):
-    print("Player O")
-    while True:
-        row = random.randint(0,2)
-        column = random.randint(0,2)
-        if board[row][column] == " ":
-            board[row][column] = "O"
-            break
-    return board
-        
+def playerXTurn(board):
+    # print("Player O")
+    # while True:
+    #     row = random.randint(0,2)
+    #     column = random.randint(0,2)
+    #     if board[row][column] == " ":
+    #         board[row][column] = "O"
+    #         break
+    # return board
+    minimaxBot(board, "X")
+#Bot for minimax tic tac toe
+def minimaxBot(board, player):
+    bestScore, bestMove = recursiveMinimax(board, player)
+    if bestMove[0] != None:
+        board[bestMove[0]][bestMove[1]] = player
+
+def recursiveMinimax(board, player):
+    #initialize variables
+    opponent = "X " if player == "O" else "O"
+    bestScore = -100 if player == "X" else 100
+    bestMove = [None, None]
+
+    # setup base cases
+    if check_winner(board) == "X":
+        return 1, bestMove
+    if check_winner(board) == "O":
+        return -1, bestMove
+    if check_draw(board):
+        return 0, bestMove
+    
+    #setup our recursive case
+    for i in range(len(board)):
+        for j in range(len(board)):
+            if board[i][j] == " ":
+                #temporarily placing move at i, j
+                board[i][j] = player
+                #recursively get the score if we place at i, j
+                score, move = recursiveMinimax(board, opponent)
+                #if we are max, update score if it's higher than best score
+                if player == "X" and score > bestScore:
+                    bestScore = score
+                    bestMove = [i, j] #update best move tobe this move
+                #if we are min, update score if it's lower than best score
+                if player == "O" and score < bestScore:
+                    bestScore = score
+                    bestMove = [i, j] #update best move tobe this move
+                board[i][j] = " "
+    #returns the best score for this board
+
+    return bestScore, bestMove
+
 def check_draw(board):
     #TODO check if the board is full
     #TODO return True if it is, False otherwise
@@ -58,7 +98,7 @@ def check_winner(board):
         return "X"
     elif board[0][0] == "X" and board[1][0] == "X" and board[2][0] == "X":#left column
         return "X"
-    elif board[0][1] == "X" and board[1][1] == "X" and board[1][2] == "X":#middle column
+    elif board[0][1] == "X" and board[1][1] == "X" and board[2][1] == "X":#middle column
         return "X"
     elif board[0][2] == "X" and board[1][2] == "X" and board[2][2] == "X":#right column
         return "X"
