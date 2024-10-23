@@ -6,6 +6,54 @@ import random
 
 # Implement a 2 player game of tic tac toe
 # Board represents a 3x3 matrix
+#bot for minimax tic tac toe
+
+def minimax_bot(board,player):
+    best_score, best_move = recursive_minimax(board,player)
+    if best_move[0] != None:
+        board[best_move[0]][best_move[1]] = player 
+def recursive_minimax(board,player):
+    #initialize some variables 
+    opponent = "X" if player == "O" else "O"
+    best_score = -100 if player == "X" else 100
+    best_move = [None,None]
+
+    #set up base cases 
+    if check_winner(board) == "X":
+        return 1, best_move
+    if check_winner(board) == "O":
+        return -1, best_move
+    if check_draw(board):
+        return 0, best_move
+    
+    #setup our recursive case 
+    for i in range(len(board)):
+        for j in range(len(board)):
+            if board[i][j] == " ":
+                #temporarily placing moves at i,j
+                board[i][j] = player 
+                #recursively get the score at i,j 
+                score, move = recursive_minimax(board, opponent)
+                #if we are max then update score if its higher than the score
+                if player == "X" and score > best_score:
+                    best_score = score
+                    best_move = [i,j] #updates the best move to this move 
+                #if we are min then update score if its lower than the score
+                if player == "O" and score < best_score:
+                    best_score = score 
+                    best_move = [i,j] #updates the best move to this move 
+                board[i][j] = " "
+    #returns the best score for this board
+    return best_score, best_move
+
+
+
+
+
+
+
+    
+
 def playerOTurn(board):
     while True:
         user_row = int(input(" player O: what row would you like to use? "))
@@ -61,6 +109,7 @@ def bot_player(board):
         if (0 <= random_row < 3) and (0 <= random_col < 3) and (board[random_row][random_col] == " "):
             board[random_row][random_col] = "O"
             break
+        
 
 
     
@@ -87,11 +136,11 @@ def tic_tac_toe():
         print("")
         if current_player == 'X':
             turn_count += 1
-            playerXTurn(board)
+            minimax_bot(board,"X")
             print(turn_count)
         else:
             turn_count += 1
-            bot_player(board)
+            playerOTurn(board)
             print(turn_count)
             
         winner = check_winner(board)
