@@ -32,7 +32,8 @@ def getMaxFutureValue(q_table, position, velocity):
     for action in ACTIONS:
         if q_table[action][x][v] > max:
             max = q_table[action][x][v]
-    return max
+            bestAction = action
+    return max, bestAction
 
 def initializeQTable():
     return np.zeros((3, 19, 15))
@@ -42,22 +43,24 @@ def updateQTable(q_table, state, reward, action, new_state):
     learningRate = 0.1
     discountFactor = 0.4
 
-    # get the position and velocity from state, and discretize for their indexes; same for new_state
+    # get the position and velocity from state, and discretize for their indexes
     position = state[0]
     velocity = state[1]
     pInd = int(discretizePosition(position))
     vInd = int(discretizeVelocity(velocity))
+    # same for new state
     newPos = new_state[0]
     newVel = new_state[1]
+    maxQ, _ = getMaxFutureValue(q_table, newPos, newVel)
     
     # current Q value variable in equation; given current position, velocity, and specified action
     currentQValue = q_table[action][pInd][vInd]
     # max future reward variable in equation; after the action performed on current state, move to new state, 
     # get the maximum q value, the best action, for the max future reward variable in equation
-    maxFutureReward = getMaxFutureValue(q_table, newPos, newVel)
+    maxFutureReward = maxQ
 
     # reward if we reach the top 
-    if position > 0.5:
+    if newPos > 0.5:
         # update q table with reward 100
         q_table[action][pInd][vInd] = 100
         print("GOAL REACHED YAY!!!")
@@ -73,16 +76,16 @@ def runEpisode(q_table):
     state, _ = env.reset()
     running = True
     while running:
-        action = random.choice(ACTIONS)
-        new_state, reward, terminated, truncated, _ = env.step(action) # move the car one step
-        updateQTable(q_table, state, reward, action, new_state)
+        _, bestAction = getMaxFutureValue(q_table, state[0], state[1])
+        new_state, reward, terminated, truncated, _ = env.step(bestAction) # move the car one step
+        updateQTable(q_table, state, reward, bestAction, new_state)
         if terminated or truncated:
             running = False
         state = new_state
 
 # run our q learning
 q_table = initializeQTable()
-episodes = 10000
+episodes = 1000
 for i in range(episodes):
     print("episode: ", i)
     if i % 100 == 0:
