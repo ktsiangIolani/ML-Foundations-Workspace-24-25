@@ -27,6 +27,9 @@ def discretizeVelocity(velocity):
 # Hint 1: Use the discretizePosition and discretizeVelocity functions to find the correct index in the q table for the given position and velocity
 # Hint 2: Use a for loop to iterate through all possible actions (0, 1, 2) and compare the q values for each action
 def getMaxFutureValue(q_table, position, velocity):
+    # q_table[action][position][velocity]
+    # loop through all the possible actions for a given position and velocity
+    # find the largest one
     actions = [0, 1, 2]
     max = -100
     x = int(discretizePosition(position))
@@ -35,6 +38,7 @@ def getMaxFutureValue(q_table, position, velocity):
         if q_table[action][x][v] > max:
             max = q_table[action][x][v]
     return max
+
 
 
 
