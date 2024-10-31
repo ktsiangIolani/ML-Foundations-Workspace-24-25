@@ -15,7 +15,7 @@ ACTIONS = [0, 1, 2]
 def discretizePosition(position):
     position += 1.2
     index = position//0.1
-    return(index)   
+    return(index)
 
 # Matches a velocity on the mountain car hill to the correct index for our q table
 def discretizeVelocity(velocity):
@@ -95,3 +95,11 @@ for i in range(episodes):
     env = gym.make("MountainCar-v0", render_mode = mode)
     runEpisode(q_table)
 env.close
+
+
+
+'''
+pip3 install gymnasium
+pip3 install pygame
+python3 mountainCarQLearning.py
+'''
