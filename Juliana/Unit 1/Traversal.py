@@ -7,14 +7,14 @@
 # Given an nxm matrix, multiply each item by 2. 
 def double_matrix(matrix):
     for i in range(len(matrix)):
-        for j in range(len(matrix)):
+        for j in range(len(matrix[0])):
             matrix[i][j] = matrix[i][j] * 2
     return matrix
 
 # TODO:Given an nxm matrix, replace all instances of the number 5 with the number 2.
 def replace_num(matrix):
     for i in range(len(matrix)):
-        for j in range(len(matrix)):
+        for j in range(len(matrix[0])):
             if matrix[i][j] == 5:
                 matrix[i][j] = 2
     return matrix
