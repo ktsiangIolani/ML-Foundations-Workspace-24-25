@@ -98,17 +98,24 @@ def runEpisode(q_table):
 
 # run our q learning
 q_table = initializeQTable()
-episodes = 5000
+episodes = 10000
 wins = 0
+current_wins = 0
 for i in range(1, episodes):
     print("episode: ", i)
-    win_rate = wins/i # Calculates the win rate
+    overall_win_rate = wins/i # Calculates the win rate
+    current_win_rate = current_wins/i
     if i % 200 == 0 and i != 1: # Prints the win rate and displays the episode every 200 episodes
-        print("Current win_rate:", win_rate, "(", wins, "won /", i, "episodes )")
-        mode = "human"
+        print("Overall win rate:", overall_win_rate, "(", wins, "won /", i, "episodes )")
+        print("Current win rate:", current_win_rate, "(", current_wins, "won / 200 episodes )")
+        current_wins = 0
+        if i > 9000:
+            mode = "human"
     else:
         mode = "none"
     env = gym.make("Acrobot-v1", render_mode = mode)
     wins += runEpisode(q_table) # Run episode and also add 1 to the number of wins if won in that episode
+    current_wins += runEpisode(q_table)
+
 env.close
 
