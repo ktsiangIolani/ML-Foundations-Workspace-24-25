@@ -1,11 +1,96 @@
+# ML Foundations 24-25 
+# Mountain Car RL Helper Functions - Ms. Tsiang
+
+#Name: Ethan Mashimo
+import random
+import numpy as np
 import gymnasium as gym
-
-#0 is accelerate left, 1 is dont accelerate, 2 is accelerate right
 ACTIONS = [0, 1, 2]
+# Matches a position on the mountain car hill to the correct index for our q table
+# For example, -1.2 should match to 0, -1.1 should match to 1 ... 0.5 should match to 17, and 0.6 should match to 18
+# Hint: Use the // operator to find the integer division of a number
+def discretizePosition(position):
+    index = position + 1.2
+    index = index//0.1 
+    return int(index)
 
-#initialize the mountain car environment from gymnasium 
-env = gym.make("MountainCar-v0", render_mode="human")
-env.reset()
 
-for i in range(20):
-    env.step(2)
+# Matches a velocity on the mountain car hill to the correct index for our q table
+# For example, -0.07 should match to 0, -0.06 should match to 1 ... 0.06 should match to 13, and 0.07 should match to 14
+# Hint: Use the // operator to find the integer division of a number
+def discretizeVelocity(velocity):
+    index = velocity + 0.07
+    index = index//0.01
+    return int(index)
+
+
+# Returns the best action to take given a state and q table
+# Find this by comparing all possible actions for a given state in the q table and returning the action with the highest value
+# Hint 1: Use the discretizePosition and discretizeVelocity functions to find the correct index in the q table for the given position and velocity
+# Hint 2: Use a for loop to iterate through all possible actions (0, 1, 2) and compare the q values for each action
+def getMaxFutureValue(q_table, position, velocity):
+    # q_table[action][position][velocity]
+    # loop through all the possible actions for a given posiion and velocity 
+    # find the largest one
+    positionIndex = discretizePosition(position)
+    velocityIndex = discretizeVelocity(velocity)
+    ACTIONS = [0, 1, 2]
+    bestAction = -100
+    bestActionNumber = 0 # 0, 1, or 2 based on the best action that we find
+
+    for action in ACTIONS:
+        if q_table[action][positionIndex][velocityIndex] > bestAction:
+            bestAction = q_table[action][positionIndex][velocityIndex]
+            bestActionNumber = action
+    return bestAction, bestActionNumber #returns a Q value (bestAction) and a number 0, 1, or 2 (bestActionNumber)
+
+
+
+def initQTable():
+    return np.zeros((3, 18, 14))
+
+def updateQTable(q_table, state, reward, action, new_state):
+    position = state[0]
+    velocity = state[1]
+    newPosition = new_state[0]
+    newVelocity = new_state[1]
+    positionIndex = discretizePosition(position)
+    velocityIndex = discretizeVelocity(velocity)
+    # update if we reach the top
+    learningRate = 0.1
+    discountFactor = 0.4
+    maxFutureValue, _ = getMaxFutureValue(q_table, state[0], state[1])
+    if newPosition > 0.5:
+        # update q table with reward 100
+        
+        q_table[action][positionIndex][velocityIndex] = 100
+        print("GOAL REACHED YAY!!")
+    else:
+        q_table[action][positionIndex][velocityIndex] = q_table[action][positionIndex][velocityIndex] + learningRate * (reward + discountFactor*maxFutureValue - q_table[action][positionIndex][velocityIndex])
+        #update q table with the q learning formula for HOMEWORK
+
+def runEpisode(q_table):
+    state, _ = env.reset()
+    running = True
+    while running:
+        #choose the best future action
+        _, actionNumber = getMaxFutureValue(q_table, state[0], state[1])
+        new_state, reward, terminated, truncated, _ = env.step(actionNumber) # move the car 1 step
+        updateQTable(q_table, state, reward, actionNumber, new_state)
+        if terminated or truncated:
+            running = False
+        state = new_state
+
+# run our q learning
+q_table = initQTable()
+episodes = 1000
+for i in range(episodes):
+    print("episode: ", i)
+    if i % 100 == 0:
+        mode = "human"
+    else:
+        mode = "none"
+    env = gym.make("MountainCar-v0", render_mode=mode)
+    runEpisode(q_table)
+
+    env.close()

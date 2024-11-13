@@ -10,7 +10,7 @@ import numpy as np
 def discretizePosition(position):
     index = position + 1.2
     index = index//0.1 
-    return index
+    return int(index)
 
 
 # Matches a velocity on the mountain car hill to the correct index for our q table
@@ -19,7 +19,7 @@ def discretizePosition(position):
 def discretizeVelocity(velocity):
     index = velocity + 0.07
     index = index//0.01
-    return index
+    return int(index)
 
 
 # Returns the best action to take given a state and q table
@@ -27,12 +27,22 @@ def discretizeVelocity(velocity):
 # Hint 1: Use the discretizePosition and discretizeVelocity functions to find the correct index in the q table for the given position and velocity
 # Hint 2: Use a for loop to iterate through all possible actions (0, 1, 2) and compare the q values for each action
 def getMaxFutureValue(q_table, position, velocity):
-    for i in range([position][velocity]):
-        index1 = position + 1.2
-        index1 = index1//0.1
-        index2 = velocity + 0.07
-        index2 = index2//0.01
-    return q_table, index1, index2
+    # q_table[action][position][velocity]
+    # loop through all the possible actions for a given posiion and velocity 
+    # find the largest one
+    positionIndex = discretizePosition(position)
+    velocityIndex = discretizeVelocity(velocity)
+    ACTIONS = [0, 1, 2]
+    bestAction = -100
+
+    for action in ACTIONS:
+        if q_table[action][positionIndex][velocityIndex] > bestAction:
+            bestAction = q_table[action][positionIndex][velocityIndex]
+    return bestAction
+        
+        
+
+
 
         
         
