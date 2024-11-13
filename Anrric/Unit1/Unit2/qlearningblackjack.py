@@ -17,9 +17,9 @@ def miniBlackjackTurn(hand):
     if user_input == "hit":
         choiceCards = random.choice(CARDS)
         hand += choiceCards
-        print("new card:", choiceCards)
+        #print("new card:", choiceCards)
     #if input is stand, dont add a card 
-    print("your current hand", hand)
+    #print("your current hand", hand)
     #treat everything above 21 as bust which we will rrepresent as 22 
     if hand > 22:
         hand = 22 
@@ -29,7 +29,7 @@ def miniBlackjackTurn(hand):
 def playGameEpisode(q_table):
     # choose a random card 
     hand = random.choice(CARDS)
-    print("initial hand:", hand)
+    #print("initial hand:", hand)
     isPlaying = True 
     while isPlaying:
         newHand,action = miniBlackjackTurn(hand)
@@ -66,7 +66,7 @@ def printTable(q_table):
 
 def updateQtable(old_hand, new_hand,reward, q_table, action):
     learningRate = 0.1
-    discountFactor = 0.4
+    discountFactor = 0.8
 
     actionIndex = ACTION.index(action)
     oldhandIndex = STATES.index(old_hand)
@@ -95,7 +95,9 @@ def qLearningOnMiniBlackJack():
     main_table = initializeDataFrame(q_table)
     episodes = 10000
     for i in range(episodes):
-        printTable(q_table)
+        if i % 100 == 0:
+            print(i)
+        #printTable(q_table)
         playGameEpisode(q_table)
         dfQ = pd.DataFrame(q_table)
         dfQ.insert(0,"episode", i)
