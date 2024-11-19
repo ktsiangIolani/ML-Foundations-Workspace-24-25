@@ -11,6 +11,10 @@ Penguins 6: Dream,51.3,19.9,198,3700,MALE
 Penguins 7: Torgersen,35.5,17.5,190,3700,FEMALE
 Penguins 8: Biscoe,48.4,14.4,203,4625,FEMALE
 Penguins 9: Biscoe,50.4,15.7,222,5750,MALE
+
+Penguin 10: Dream,46.6,17.8,193,3800,FEMALE
+Penguin 11: Biscoe,46.2,14.5,209,4800,FEMALE
+Penguin 12: Torgersen,46,21.5,194,4200,MALE
 ,,,,,
 ,,,,,
 Here are the answers for each penguin,,,,,
@@ -23,3 +27,7 @@ Penguins 6: Chinstrap,,,,,
 Penguins 7: Adelie,,,,,
 Penguins 8: Gentoo,,,,,
 Penguins 9: Gentoo,,,,,
+
+Penguin 10: Chinstrap,,,,,
+Penguin 11: Gentoo,,,,,
+Penguin 12: Adelie,,,,,

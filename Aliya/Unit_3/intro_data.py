@@ -24,7 +24,7 @@ print("dimensions:", dataframe.shape)
 
 # ---------------------------- Plot data ----------------------------
 
-# px.scatter(dataframe, x = "flipper_length", y = "beak_length_mm", color = "species", symbol = "island").show()
+px.scatter(dataframe, x = "flipper_length", y = "beak_length_mm", color = "species", symbol = "island").show()
 
 # ---------------------------- Plot data ----------------------------
 
