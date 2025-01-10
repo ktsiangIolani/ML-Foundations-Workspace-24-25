@@ -20,23 +20,29 @@ x_train, x_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, rando
 # Initialise a Neural Network using keras (which comes from tensorflow)
 neuralNet = keras.Sequential([
     # define the layers of our network
-    layers.Dense(units = 5, activation = 'relu', input_shape = [11]),
-    layers.Dense(units = 4, activation = 'relu'),
+    layers.Dense(units = 50, activation = 'relu', input_shape = [11]),
+    layers.Dense(units = 10, activation = 'relu'),
     layers.Dense(units = 1)
+
     ])
 
 # Set up the loss function and backpropagation optimizer
 neuralNet.compile(
     loss = 'mse',
-    optimizer = 'adam' # the thing that optimises our weights using backprop and gradient descent
+    optimizer = keras.optimizers.Adam(learning_rate=0.03) # the thing that optimises our weights using backprop and gradient descent
     )
 
 history = neuralNet.fit(
     x_train, y_train,
     validation_data = (x_test, y_test),
-    epochs = 25, # number of 'episodes for forward and backprop
-    batch_size = 700 # how much data do we do at a time
+    epochs = 30, # number of 'episodes for forward and backprop
+    batch_size = 100 # how much data do we do at a time
     )
 
 df = pd.DataFrame(history.history)['loss']
 px.line(df).update_layout(xaxis_title = 'Epochs', yaxis_title = 'Loss').show()
+
+# see what some of our predictions are
+predictions = neuralNet.predict(x_test)
+for i in range(5):
+    print("predicted: ", predictions[i], "expected: ", y_test.iloc[i]['quality'])
