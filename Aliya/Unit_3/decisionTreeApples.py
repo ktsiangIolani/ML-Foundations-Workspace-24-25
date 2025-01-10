@@ -1,14 +1,10 @@
 # Name:
 # ML Foundations 24-25
-# Supervised Learning - Penguins.csv
+# Supervised Learning - apple_quality.csv
 
 # THE GOAL
-# This program will take in data about a penguin and predict what species it is
+# This program will take in data about an apple and predict what its quality is
 
-# THE DATA
-# There are two data sets in this folder:
-# Use the penguins in penguins_train.csv as the data for this program
-# Use the penguins in penguins_test.csv to test your program and see how accurate it is
 
 #import necessary python tools
 import pandas as pd
@@ -18,7 +14,7 @@ from sklearn.preprocessing import LabelEncoder
 import plotly.express as px
 from sklearn.model_selection import train_test_split
 
-#This function take in data about the penguin. It must be entered as island, beak length, beak height, flipper length, body_mass, gender
+#This function take in data about the apple. It must be entered as size, weight, sweetness, crunchiness, juiciness, ripeness, acidity
 def get_apple_info():
     appleInfo = []
     while(len(appleInfo) != 7):
@@ -31,15 +27,15 @@ def get_apple_info():
 df = pd.read_csv("apple_quality.csv")
 df = df.dropna()
 
-# TODO 1: complete the function predict_penguin_species
+# TODO 1: complete the function predict_apple_quality
 
-# Return the closest species of the penguin based on the data given.
-# In some cases, you may decide that no species is close enough to the data. In that case return "No species found"
+# Return the closest quality of the apple based on the data given.
+# In some cases, you may decide that no quality is close enough to the data. In that case return "No quality found"
 def predict_apple_quality(size, weight, sweetness, crunchiness, juiciness, ripeness, acidity):
     # Step 1: Preprocess our data - encode our string values into numbers
     # That is quality
     quality_encoder = LabelEncoder()
-    # Transform our string values gender, species and islands into a numerical representation like 1 and 2
+    # Transform our string value quality into a numerical representation like 1 and 2
     df['Quality'] = quality_encoder.fit_transform(df['Quality'])
 
     # Step 1.5: choose a subset of traits using a corrolation heatmap
@@ -93,6 +89,3 @@ def main():
     print("The quality of the apple is: " + quality)
 
 main()
-
-
-
